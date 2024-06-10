@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Speech</title>
+</head>
+<body>
+    <textarea id="inputText" placeholder="Enter your text here"></textarea>
+    <button id="generateButton">Generate Audio</button>
+    <audio id="audioPlayer" controls></audio>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#generateButton').click(function(){
+                var text = $('#inputText').val();
+                $.ajax({
+                    url: 'https://f463-35-247-170-134.ngrok-free.app/flask',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({txt: text}),
+                    success: function(data) {
+                        console.log(data);
+                        var blob = new Blob([data], { type: 'audio/wav' });
+                        console.log(blob);
+                        var audioPlayer = document.getElementById('audioPlayer');
+                        audioPlayer.src = URL.createObjectURL(blob);
+                        url=audioPlayer.src;
+                        console.log(audioPlayer.src);
+                        $('#audioPlayer').attr('src', url);
+                    
+                // Play the audio
+                        $('#audioPlayer').get(0).play();
+
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
