@@ -63,7 +63,7 @@ function speak(text) {
         stopSpeakingAnimation() // Revert to original image after speaking
     };
 }
-
+*/
 // Speech Recognition function
 function listen() {
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
@@ -73,29 +73,30 @@ function listen() {
 
     recognition.onresult = function(event) {
         const transcript = event.results[0][0].transcript;
-        handleUserInput(transcript);
+        console.log(transcript);
+        document.getElementById('user_inp').value=transcript
+        
     };
 
     recognition.onerror = function(event) {
         console.error('Speech recognition error:', event.error);
     };
 }
-
-// Handle user input
-function handleUserInput(input) {
-    console.log('User said:', input);
-
-    let response = "I'm sorry, I didn't understand that.";
-    if (input.toLowerCase().includes('hello')) {
-        response = 'The Great Sphinx is a monumental sculpture with the body of a lion and the head of a human, believed to represent a pharaoh. It measures approximately 73 meters (240 feet) in length and 20 meters (66 feet) in height, making it one of the largest and oldest monolithic statues in the world. The Sphinx faces east, aligning with the rising sun, which is symbolic in ancient Egyptian culture.';
-    } else if (input.toLowerCase().includes('your name')) {
-        response = 'My name is Chatty!';
-    }
-
-    speak(response);
-
+/*
+function postToServer(transcript) {
+    fetch('/z', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ text: transcript }),
+        redirect: 'follow'
+    })
+    .then(response => response)
+    .then(data => console.log('Success:', data))
+    .catch(error => console.error('Error:', error));
 }
-    */
+   */ 
 function startSpeakingAnimation() {
     const characterImage = document.getElementById('character-image');
     let isSpeaking = true;
@@ -121,9 +122,10 @@ function stopSpeakingAnimation() {
         characterImage.src = 'img/photo_3.png'; // Revert to idle image
 }
 // Button event listener
-/*
+
 document.getElementById('talk-button').addEventListener('click', () => {
     listen();
     
+    
 });
-*/
+
